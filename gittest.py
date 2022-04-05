@@ -1,3 +1,3 @@
 # trying out github for the first time
 
-a = 4
+print('this is the test\nthe only test, my frest')
