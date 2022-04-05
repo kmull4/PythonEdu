@@ -1,0 +1,2 @@
+https://code.cs50.io/ for easy Visual Studio without IDE
+
