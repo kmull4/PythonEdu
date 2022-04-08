@@ -16,6 +16,11 @@ return
 
 ; use SysGet to get monitor info and assign these to variables
 F3::
+; get num of monitors and primary monitor
+; loop to make expressions for each monitor
+
+; get necessary stats for each monitor
+    ; these include height, width, primary, 
 SysGet, OutputVar, Monitor, 1
 MsgBox, %OutputVarTop%
 return
@@ -23,7 +28,7 @@ return
 ; list of the windows to have on the primary screen
 
 ; list of the windows to have on the secondary screen
-
+; or maybe make a dictionary of the windows with format 'program:window,half screen (left or right)'
 
 ; move window function. next step is to take in parameters for primary or secondary screens
 MoveWindow(WinTitle)
@@ -51,7 +56,7 @@ WinGetPos, xpos, ypos, wid, hei, Notepad
 Msgbox, Notepad at %xpos% %ypos% %wid% %hei% `nscreen = %A_ScreenWidth% x %A_ScreenHeight%
 return
 
-; main screen 1920 x 1080
-; half is 960 x 540
+; main screen 1920w x 1080h
+; half is 960w x 540h
 ; original winmove: WinMove, %WinTitle%,, (A_ScreenWidth/2)-(wid/2), (A_ScreenHeight/2)-(hei/2), 200,200
 ; save this one: WinMove, %WinTitle%,, (A_ScreenWidth/2), (A_ScreenHeight/2), 200,200
