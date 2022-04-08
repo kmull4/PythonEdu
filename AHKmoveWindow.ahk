@@ -15,16 +15,24 @@ return
 ;~~~~~~~~~~I declare these Frycook Games open!~~~~~~~~~~
 
 ; use SysGet to get monitor info and assign these to variables
-F3::
-; get num of monitors and primary monitor
-; loop to make expressions for each monitor
+F3::    ; just for testing sysget right now
+SysGet, numMonitors, MonitorCount   ; get num of monitors
+SysGet, primMonitor, MonitorPrimary   ; and primary monitor
+
+; for loop to make expressions (variables but :=) for each monitor
+colours := Object("red", 0xFF0000, "blue", 0x0000FF, "green", 0x00FF00)
+; The above expression could be used directly in place of "colours" below:
+for k, v in colours
+    s .= k "=" v "`n"
+MsgBox % s
 
 ; get necessary stats for each monitor
-    ; these include height, width, primary, 
-SysGet, OutputVar, Monitor, 1
-MsgBox, %OutputVarTop%
+    ; these include height, width, primary, and monitor # (primary not always #1)
+
 return
 
+
+;~~~~~~~~~~
 ; list of the windows to have on the primary screen
 
 ; list of the windows to have on the secondary screen
