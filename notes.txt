@@ -1,2 +1,1 @@
-https://code.cs50.io/ for easy Visual Studio without IDE
-
+https://code.cs50.io/ for easy Visual Studio without IDE. but it's broken at this time.
