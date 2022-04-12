@@ -14,21 +14,25 @@ return
 
 ;~~~~~~~~~~I declare these Frycook Games open!~~~~~~~~~~
 
-; use SysGet to get monitor info and assign these to variables
-F3::    ; just for testing sysget right now
+F3::
+; use SysGet to get monitor info and assign variables to these values
 SysGet, numMonitors, MonitorCount   ; get num of monitors
 SysGet, primMonitor, MonitorPrimary   ; and primary monitor
 
-; for loop to make expressions (variables but :=) for each monitor
-colours := Object("red", 0xFF0000, "blue", 0x0000FF, "green", 0x00FF00)
-; The above expression could be used directly in place of "colours" below:
-for k, v in colours
-    s .= k "=" v "`n"
-MsgBox % s
+; make a dictionary supporting up to 4 monitors, can't figure it out for a variable amount
+mydict := {mon1:[], mon2:[], mon3:[], mon4:[]}
 
-; get necessary stats for each monitor
-    ; these include height, width, primary, and monitor # (primary not always #1)
-
+; for loop to set variables for each monitor
+counter := 0    ; need another count in for loop below
+for k, v in mydict {
+    if (counter == numMonitors) {
+    break   ; this is where the other counter comes in
+    }
+    counter += 1
+    SysGet, myOutput, Monitor , %counter%
+    v.push(myOutputLeft, myOutputTop, myOutputRight, myOutputBottom)    ; append the array
+    MsgBox % k ", " v[3]
+}
 return
 
 
@@ -55,7 +59,10 @@ MoveWindow(WinTitle)
 
 
 F4::	; AHK, do the thing!
-MoveWindow("ahk_exe Spotify.exe")
+;MoveWindow("ahk_exe Spotify.exe")
+myarray := ["asdf","345"]
+myarray.Push(6)
+MsgBox % myarray[3]
 return
 
 
