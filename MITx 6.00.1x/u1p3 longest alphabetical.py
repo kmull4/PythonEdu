@@ -16,9 +16,7 @@ Note: This problem may be challenging. We encourage you to work smart. If
  problem after you've had a break and cleared your head. 
 '''
 
-# if this doesn't work, look at the enumerate function
-
-debug = True
+debug = False
 
 # s is assumed but here for the debug process
 if debug:
@@ -37,9 +35,8 @@ for i in s:
     if debug:
         print('i =', i, 'counter =', counter, 'pos =', pos)
     counter = pos
-    # while loop to keep proceeding to next letter and setting score
-
-    for j in range(len(s[pos:-1])):
+    # for loop to keep proceeding to next letter and setting score
+    for j in range(len(s[pos:-1])): # one short of an error
         if s[counter] <= s[counter+1]:
             score += 1
             counter += 1
@@ -52,7 +49,6 @@ for i in s:
         high_score = score
         # set high_score_str
         high_score_str = s[pos:pos+score+1]
-
     # reset score
     score = 0
     # position in string moves
