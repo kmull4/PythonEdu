@@ -33,7 +33,7 @@ Write an iterative function, gcdIter(a, b), that implements this idea. One easy 
 ##############################################################
 debug = False
 # max length of string before break. 
-max_len = 80
+max_len = 79
 # I wonder if I even need enumerate if this tracker is used
 new_line_tracker, last_space = 0, 0
 
@@ -55,10 +55,7 @@ for position, letter in enumerate(instructions):
     # will code this later
     
     # this determines when we've hit the line length
-    if (position + new_line_tracker) % max_len == 0:
-        # don't know why the & isn't working?
-        if position == 0:
-            continue
+    if (position + new_line_tracker) % max_len == 0 and position != 0:
         # this puts in a new line at the last space
         instructions = instructions[:last_space] + str('\n') + \
             instructions[last_space+1:]
