@@ -26,7 +26,7 @@ be.
 Note: In programming there are many ways to solve a problem. For your code to
 check correctly here, though, you must write your recursive function such that
 you make a recursive call directly to the function isIn. Thank you for
-understanding. 
+understanding.
 '''
 
 def isIn(char, aStr):
