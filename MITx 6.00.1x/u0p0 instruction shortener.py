@@ -15,25 +15,8 @@ Idea for v2: interact with clipboard or other .py files
 # I'm thinking it's easiest to have the big string field here
 instructions = '''
 
-The greatest common divisor of two positive integers is the largest integer that divides each of them without remainder. For example,
+Note: In programming there are many ways to solve a problem. For your code to check correctly here, though, you must write your recursive function such that you make a recursive call directly to the function isIn. Thank you for understanding.
 
-gcd(2, 12) = 2
-
-gcd(6, 12) = 6
-
-gcd(9, 12) = 3
-
-gcd(17, 12) = 1
-
-A clever mathematical trick (due to Euclid) makes it easy to find greatest common divisors. Suppose that a and b are two positive integers:
-
-If b = 0, then the answer is a
-
-Otherwise, gcd(a, b) is the same as gcd(b, a % b)
-
-See this website for an example of Euclid's algorithm being used to find the gcd.
-
-Write a function gcdRecur(a, b) that implements this idea recursively. This function takes in two positive integers and returns one integer.
 
 
 '''
@@ -42,7 +25,7 @@ Write a function gcdRecur(a, b) that implements this idea recursively. This func
 ##############################################################
 debug = False
 # max length of string before break. 
-max_len = 79
+max_len = 78
 # I wonder if I even need enumerate if this tracker is used
 new_line_tracker, last_space = 0, 0
 
