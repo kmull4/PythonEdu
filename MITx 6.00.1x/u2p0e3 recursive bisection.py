@@ -21,7 +21,7 @@ in alphabetical order. The function should return a boolean value.
 
 As you
 design the function, think very carefully about what the base cases should
-be.
+be.  
 
 Note: In programming there are many ways to solve a problem. For your code to
 check correctly here, though, you must write your recursive function such that
