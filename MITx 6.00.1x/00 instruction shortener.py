@@ -6,9 +6,9 @@ Solution: more Python!
 
 TO DO:
     ✔ Go back a few words and break on a space to keep words whole
-    - Reset count on normal new line breaks
+    ✔ Reset count on normal new line breaks
 
-Idea for v2: interact with clipboard or other .py files
+Idea for v2: interact with other .py files
 '''
 ##############################################################
 
