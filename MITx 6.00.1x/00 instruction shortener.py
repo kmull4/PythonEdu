@@ -15,8 +15,17 @@ Idea for v2: interact with other .py files
 # I'm thinking it's easiest to have the big string field here
 instructions = '''
 
-Note: In programming there are many ways to solve a problem. For your code to check correctly here, though, you must write your recursive function such that you make a recursive call directly to the function isIn. Thank you for understanding.
+Regular Polygons: polysum
 
+A regular polygon has 'n' number of sides. Each side has length 's'.
+
+* The area of regular polygon is: (0.25*n*s^2)/tan(pi/n)
+* The perimeter of a polygon is: length of the boundary of the polygon
+
+Write a function called 'polysum' that takes 2 arguments, 'n' and 's'. This function should sum the area and square of the perimeter of the regular polygon. The function returns the sum, rounded to 4 decimal places.
+
++++ IMPORTANT NOTE +++
+You must upload a .py file. Any code you enter in the box will have its spacing removed, so will be unreadable by your peers. In the box type in anything, for example, "attached".
 
 
 '''
