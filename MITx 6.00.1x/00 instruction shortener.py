@@ -17,15 +17,15 @@ instructions = '''
 
 Regular Polygons: polysum
 
-A regular polygon has 'n' number of sides. Each side has length 's'.
+Please read the Hangman Introduction before starting this problem. We'll start by writing 3 simple functions that will help us easily code the Hangman problem. First, implement the function isWordGuessed that takes in two parameters - a string, secretWord, and a list of letters, lettersGuessed. This function returns a boolean - True if secretWord has been guessed (ie, all the letters of secretWord are in lettersGuessed) and False otherwise.
 
-* The area of regular polygon is: (0.25*n*s^2)/tan(pi/n)
-* The perimeter of a polygon is: length of the boundary of the polygon
+Example Usage:
 
-Write a function called 'polysum' that takes 2 arguments, 'n' and 's'. This function should sum the area and square of the perimeter of the regular polygon. The function returns the sum, rounded to 4 decimal places.
-
-+++ IMPORTANT NOTE +++
-You must upload a .py file. Any code you enter in the box will have its spacing removed, so will be unreadable by your peers. In the box type in anything, for example, "attached".
+>>> secretWord = 'apple' 
+>>> lettersGuessed = ['e', 'i', 'k', 'p', 'r', 's']
+>>> print(isWordGuessed(secretWord, lettersGuessed))
+False
+For this function, you may assume that all the letters in secretWord and lettersGuessed are lowercase.
 
 
 '''
