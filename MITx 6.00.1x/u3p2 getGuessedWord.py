@@ -35,7 +35,7 @@ def getGuessedWord(secretWord, lettersGuessed):
     returns: string, comprised of letters and underscores that represents
     what letters in secretWord have been guessed so far.
     '''
-    debug = True
+    debug = False
     index = 0
     for l in secretWord:
         if debug:
@@ -45,7 +45,7 @@ def getGuessedWord(secretWord, lettersGuessed):
             secretWord = secretWord[:index] + str('_ ') + secretWord[index+1:]
             if debug:
                 print('l not in lettersGuessed, secretWord now =', secretWord)
-            
+            index += 1 # this was the missing key
         index += 1
         # return the new string
     return secretWord
