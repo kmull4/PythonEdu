@@ -18,8 +18,8 @@ lowercase.
 Hint: You might consider using string.ascii_lowercase, which is a string
 comprised of all lowercase letters:
 
-import string
-print(string.ascii_lowercase)
+>>> import string
+>>> print(string.ascii_lowercase)
 abcdefghijklmnopqrstuvwxyz
 '''
 
@@ -27,7 +27,15 @@ def getAvailableLetters(lettersGuessed):
     '''
     lettersGuessed: list, what letters have been guessed so far
     returns: string, comprised of letters that represents what letters have not
-      yet been guessed.
+    yet been guessed.
     '''
-    # was time for bed
-    
+    # use the hint given above
+    import string
+    # take a the whole lowercase ascii
+    remainingLetters = string.ascii_lowercase
+    # then do an if lettersGuessed in str, remove that one from the str
+    for l in lettersGuessed:
+        if l in remainingLetters:
+            remainingLetters = remainingLetters.replace(l, '')
+    # and return the final product
+    return remainingLetters
