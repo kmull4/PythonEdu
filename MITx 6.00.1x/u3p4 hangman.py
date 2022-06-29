@@ -3,5 +3,35 @@
 Instructons here
 
 '''
+def hangman(secretWord):
+    '''
+    secretWord: string, the secret word to guess.
 
-# code
+    Starts up an interactive game of Hangman.
+
+    * At the start of the game, let the user know how many 
+      letters the secretWord contains.
+
+    * Ask the user to supply one guess (i.e. letter) per round.
+
+    * The user should receive feedback immediately after each guess 
+      about whether their guess appears in the computers word.
+
+    * After each round, you should also display to the user the 
+      partially guessed word so far, as well as letters that the 
+      user has not yet guessed.
+
+    Follows the other limitations detailed in the problem write-up.
+    '''
+    import string
+    
+    secretWord = 'asdf'
+    lettersGuessed = []
+    mistakesMade = 0
+    availableLetters = string.ascii_lowercase
+    
+    # let user know how many letters the word contains
+    print(len(secretWord))
+    
+    userGuess = input('Make ya guess')
+    
