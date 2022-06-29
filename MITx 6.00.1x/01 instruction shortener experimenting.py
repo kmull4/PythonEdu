@@ -51,12 +51,27 @@ For this function, you may assume that all the letters in secretWord and letters
 
 
 '''
-
 # max length of string before break.
 max_len = 78
 if debug:
     max_len = 20 # to make debugging easier
 last_space, new_line_tracker = 0, 0
+
+
+'''         ~~make this into a function:~~
+elif (position - new_line_tracker) % max_len == 0 and position != 0:
+    # this replaces the last space with a newline
+    instructions = instructions[:last_space] + str('\n') + \
+        instructions[last_space+1:]
+    # it's very ironic that this^ line goes over 80 characters
+'''
+def new_line_inserter(position, new_line_tracker):
+    global instructions
+    if (position - new_line_tracker) % max_len == 0 and position != 0:
+        instructions = instructions[:last_space] + str('\n') + \
+            instructions[last_space+1:]
+        # it's very ironic that this^ line goes over 80 characters
+    return
 
 if debug: # a good starting point
     print(instructions)
@@ -82,7 +97,7 @@ for position, letter in enumerate(instructions):
         # this replaces the last space with a newline
         instructions = instructions[:last_space] + str('\n') + \
             instructions[last_space+1:]
-        # it's very ironic that this^ line goes over 80 characters
+        # it's rather ironic that this^ line goes over 80 characters
         
         if debug:
             print('newline inserted at last space. position was', position, \
