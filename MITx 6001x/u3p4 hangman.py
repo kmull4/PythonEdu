@@ -1,7 +1,5 @@
 '''
-
-Instructons here
-
+Create the Hangman game.
 '''
 def isWordGuessed(secretWord, lettersGuessed):
     '''
