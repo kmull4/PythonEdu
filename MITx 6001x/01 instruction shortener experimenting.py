@@ -28,7 +28,7 @@ For this function, you may assume that all the letters in secretWord and letters
 ##############################################################
 # variables that need initializing
 last_space, new_line_tracker, max_len = 0, 0, 78
-debug = True
+debug = False
 # example to keep that actually broke something
 if debug == True:
     max_len = 20 # to make debugging easier
