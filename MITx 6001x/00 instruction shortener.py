@@ -10,17 +10,20 @@ TO DO:
 
 Idea for v2: interact with other .py files
 '''
+
 ##############################################################
 # I'm thinking it's easiest to have the big string field here
 instructions = '''
-Next, implement the function getGuessedWord that takes in two parameters - a string, secretWord, and a list of letters, lettersGuessed. This function returns a string that is comprised of letters and underscores, based on what letters in lettersGuessed are in secretWord. This shouldn't be too different from isWordGuessed!
+Your task is to define the following two methods for the intSet class:
 
-Example Usage:
-When inserting underscores into your string, it's a good idea to add at least a space after each one, so it's clear to the user how many unguessed letters are left in the string (compare the readability of ____ with _ _ _ _ ). This is called usability - it's very important, when programming, to consider the usability of your program. If users find your program difficult to understand or operate, they won't use it!
+Define an intersect method that returns a new intSet containing elements that appear in both sets. In other words,
 
-For this problem, you are free to use spacing in any way you wish - our grader will only check that the letters and underscores are in the proper order; it will not look at spacing. We do encourage you to think about usability when designing.
-For this function, you may assume that all the letters in secretWord and lettersGuessed are lowercase.
+s1.intersect(s2)
+would return a new intSet of integers that appear in both s1 and s2. Think carefully - what should happen if s1 and s2 have no elements in common?
 
+Add the appropriate method(s) so that len(s) returns the number of elements in s.
+
+Hint: look through the Python docs to figure out what you'll need to solve this problem.
 '''
 
 
