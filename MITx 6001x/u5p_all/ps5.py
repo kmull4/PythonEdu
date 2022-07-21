@@ -102,7 +102,20 @@ class Message(object):
         Returns: a dictionary mapping a letter (string) to 
                  another letter (string). 
         '''
-        pass #delete this line and replace with your code here
+        standard_list = [] # a standardized set of the letters
+        for l in string.ascii_uppercase:
+            standard_list.append(l)
+        for l in string.ascii_lowercase:
+            standard_list.append(l)
+        mydict = {}
+        counter = 0
+        for l in string.ascii_uppercase:
+            mydict[l] = standard_list[counter + shift]
+            counter += 1
+        for l in string.ascii_lowercase:
+            mydict[l] = counter
+            counter += 1
+        return mydict
 
     def apply_shift(self, shift):
         '''
@@ -116,7 +129,20 @@ class Message(object):
         Returns: the message text (string) in which every character is shifted
              down the alphabet by the input shift
         '''
-        pass #delete this line and replace with your code here
+        # establish starting values
+        cyphered_string = ''
+        shifted_dict = self.build_shift_dict(shift)
+        # now cypher it up
+        for l in self.get_message_text():
+            # if anything but a letter, skip it
+            if l not in string.ascii_uppercase and \
+                l not in string.ascii_lowercase:
+                cyphered_string = cyphered_string + l
+                continue
+            # if is letter
+            cyphered_string = cyphered_string + str(shifted_dict[l])
+        return cyphered_string
+
 
 class PlaintextMessage(Message):
     def __init__(self, text, shift):
@@ -216,3 +242,8 @@ print('Actual Output:', plaintext.get_message_text_encrypted())
 ciphertext = CiphertextMessage('jgnnq')
 print('Expected Output:', (24, 'hello'))
 print('Actual Output:', ciphertext.decrypt_message())
+
+# more testing
+print('\n')
+me = Message('This is a test; the only test, my frest.')
+print(me.apply_shift(4))
