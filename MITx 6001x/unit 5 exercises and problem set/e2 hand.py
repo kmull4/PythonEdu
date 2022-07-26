@@ -97,8 +97,15 @@ class Hand(object):
         word: string
         returns: Boolean (if the word was or was not made)
         """
-        # Your code here
-        raise NotImplementedError()
+        # check to see if self.hand has all the letters in the word
+        for l in word:
+            if l not in self.hand:
+                return False
+        # assumes from here that the hand has all needed letters
+        # remove the letters from self.hand
+        
+        # then return True per docstring
+        return True
 
     
 myHand = Hand(7)
@@ -109,5 +116,9 @@ myHand.setDummyHand('aazzmsp')
 print(myHand)
 print(myHand.calculateLen())
 
-myHand.update('za')
+myHand.update('zan')
 print(myHand)
+
+# my own testing
+print('---')
+print(myHand.update('za'))
