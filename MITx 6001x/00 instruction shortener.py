@@ -14,16 +14,13 @@ Idea for v2: interact with other .py files
 ##############################################################
 # I'm thinking it's easiest to have the big string field here
 instructions = '''
-Your task is to define the following two methods for the intSet class:
+In this problem, you'll be asked to read through an object-oriented implementation of the hand from the word game problem of Problem Set 4. You'll then be asked to implement one of its methods. Note that the implementation of the object-oriented version of the hand is a bit different than how we did things with the functional implementation; pay close attention to doc strings and read through the implementation carefully.
 
-Define an intersect method that returns a new intSet containing elements that appear in both sets. In other words,
+To begin: Download hand.py and read through the file. Be sure to understand what's going on in the file. Make a few instances of the Hand class, and play around with the existing methods.
 
-s1.intersect(s2)
-would return a new intSet of integers that appear in both s1 and s2. Think carefully - what should happen if s1 and s2 have no elements in common?
+When you have completed reading through the file, implement the update method.
 
-Add the appropriate method(s) so that len(s) returns the number of elements in s.
-
-Hint: look through the Python docs to figure out what you'll need to solve this problem.
+Paste the entire Hand class in the box below.
 '''
 
 

@@ -103,7 +103,8 @@ class Hand(object):
                 return False
         # assumes from here that the hand has all needed letters
         # remove the letters from self.hand
-        
+        for l in word:
+            self.hand[l] -= 1
         # then return True per docstring
         return True
 
@@ -116,7 +117,7 @@ myHand.setDummyHand('aazzmsp')
 print(myHand)
 print(myHand.calculateLen())
 
-myHand.update('zan')
+myHand.update('za')
 print(myHand)
 
 # my own testing
