@@ -3,6 +3,9 @@ Create the Hangman game.
 
 v2. Updating just for fun! I want to see if I can use later modules from the
 class and make Hangman start with a random word.
+
+Update after v2... it's been many games now and I have still yet to win one.
+I have accidentally made Nightmare Hangman.
 '''
 
 import random
@@ -114,20 +117,33 @@ def hangman(secretWord):
     # determine if loss or win
     if (numGuesses - mistakesMade) == 0:
         print('-----------')
-        print(str('Sorry, you ran out of guesses. The word was ') + secretWord \
-              + str('.'))
+        print('Sorry, you ran out of guesses.')
+        # uncomment to provide word to player
+        #print(str('Sorry, you ran out of guesses. The word was ') + \
+        #      secretWord + str('.'))
+        return 'L'
     else:
         print('-----------')
         print('Congratulations, you won!')
+        return 'W'
 
 
 # this is a spacing
 '''to separate the classwork'''
 # from the new, funwork
 
+def tryAgain(notSoRandomWord):
+    while True:
+        tryAgainInput = input('Do you want to try again? y/n')
+        if tryAgainInput == 'n':
+            print('Bummer! The word was', notSoRandomWord)
+            return
+        elif tryAgainInput == 'y':
+            hangman(notSoRandomWord)
+    return
+
 def menu(wordlist):
-    # make random word
-    # later add in that you can retry that word on a loss
+    # add in ability to retry word on a loss
         # reminder to go back and remove the line that tells the word on loss
     while True:
         print('Do you wanna play a game?')
@@ -137,7 +153,10 @@ def menu(wordlist):
         # typing "anything else" is the only way to quit
         menuInput = input('').lower()
         if menuInput == 'n':
-            hangman(randomWord)
+            if hangman(randomWord) == 'W':
+                continue
+            else:
+                tryAgain(randomWord)
         elif menuInput == 'anything else':
             return
         else:
@@ -146,7 +165,6 @@ def menu(wordlist):
 # -----------------------------------
 # Helper code from later in the class, ironically enough.
 # (you don't need to understand this helper code)
-
 WORDLIST_FILENAME = "words.txt"
 
 def loadWords():
