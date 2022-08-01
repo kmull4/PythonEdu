@@ -11,7 +11,7 @@ def main():
     import os
     
     # change these variables as needed to use this program
-    directory = 'C:/Users/Insert Filepath Here'
+    directory = os.getcwd()
     filename_start = 'SpongeBob SquarePants'    # substring in the filename
     
     def remove_prefix(old_name):
