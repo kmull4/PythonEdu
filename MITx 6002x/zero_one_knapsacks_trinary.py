@@ -28,7 +28,7 @@ def yieldAllCombos(items):
         for j in range(N):
             # test bit jth of integer i
             if (i // 3**j) % 3 == 1: # ">>" = i // 2**j
-                bag2.append(items[j])
-            elif (i // 3**j) % 3 == 2: # ">>" = i // 2**j
                 bag1.append(items[j])
+            elif (i // 3**j) % 3 == 2: # ">>" = i // 2**j
+                bag2.append(items[j])
         yield (bag1, bag2)
