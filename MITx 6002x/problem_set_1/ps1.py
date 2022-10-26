@@ -54,8 +54,41 @@ def greedy_cow_transport(cows,limit=10):
     transported on a particular trip and the overall list containing all the
     trips
     """
-    # TODO: Your code here
-    pass
+    # Helper function. Returns a tuple with optimal cow's name and weight, or
+    # returns None if no valid cows.
+    def largest_can_fit(cows_copy, remaining_limit):
+        weight = -1
+        for c in cows_copy:
+            if cows_copy[c] > weight and cows_copy[c] <= remaining_limit:
+                name = c
+                weight = cows_copy[c]
+        if weight == -1: # no valid cows
+            return None
+        else:
+            return (name, weight)
+    
+    # initialize a few things
+    cows_copy = cows.copy()
+    master_list = []
+    this_trip = []
+    remaining_limit = limit
+    while len(cows_copy) > 0:
+        # go through the cows and find highest at or below the limit
+        best_cow = largest_can_fit(cows_copy, remaining_limit)
+        if best_cow == None: # no more valid cows
+            master_list.append(this_trip)
+            this_trip = []
+            remaining_limit = limit
+            continue
+        # from here we assume we have a valid cow
+        this_trip.append(str(best_cow[0]))
+        # subtract from weight limit
+        remaining_limit -= best_cow[1]
+        # and remove the cow from cows_copy
+        del cows_copy[str(best_cow[0])]
+    # add the last trip that didn't make it through the while loop
+    master_list.append(this_trip)
+    return master_list
 
 
 # Problem 2
@@ -109,9 +142,7 @@ lines to print the result of your problem.
 
 cows = load_cows("ps1_cow_data.txt")
 limit=100
-print(cows)
+print(cows,'\n')
 
 print(greedy_cow_transport(cows, limit))
 print(brute_force_cow_transport(cows, limit))
-
-
