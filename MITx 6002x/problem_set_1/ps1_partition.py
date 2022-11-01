@@ -21,5 +21,6 @@ def get_partitions(set_):
 ### Uncomment the following code  and run this file
 ### to see what get_partitions does if you want to visualize it:
 
-#for item in (get_partitions(['a','b','c','d'])):
-#     print(item)
+def test_ps1_part(): # changed the original commenting scheme
+    for item in (get_partitions(['a','b','c','d'])):
+        print(item)
