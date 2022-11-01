@@ -114,20 +114,17 @@ def brute_force_cow_transport(cows,limit=10):
     """
     # it worked last time and helped me keep organized
     cows_copy = cows.copy()
-    this_trip = []
-    remaining_limit = limit
-    answer = []
+    lowest_edge = len(cows_copy) # track the answer with lowest possible edges
     
-    # since get_partitions takes in a list, make list
+    # since get_partitions takes in a list and not a dictionary, make list
     cow_list = []
     for i in cows.copy():
         cow_list.append(i) # add the keys
-    lowest_edge = len(cow_list) # track the answer with lowest possible edges
     
     # call get_partitions() with the list of cows
     for combo in (get_partitions(cow_list)):
-        # see if combo is valid by finding sum of weights in each list
-        weight_broken = 0
+        # see if combo is valid
+        weight_broken = 0 # how many trips in combo break the weight limit
         num_trips = 0
         for trip in combo: # determine if trip breaks weight limit
             num_trips += 1    
@@ -137,7 +134,7 @@ def brute_force_cow_transport(cows,limit=10):
             if total > limit: # limit broken
                     weight_broken += 1
         if weight_broken > 0:
-            continue
+            continue # moves to the next combo of trips
         else: # combo is valid
             # find number of edges (trips). if lower, make this the new answer
             if num_trips <= lowest_edge:
@@ -145,7 +142,7 @@ def brute_force_cow_transport(cows,limit=10):
                 answer = combo
     return answer
 
-        
+
 # Problem 3
 def compare_cow_transport_algorithms():
     """
@@ -160,8 +157,18 @@ def compare_cow_transport_algorithms():
     Returns:
     Does not return anything.
     """
-    # TODO: Your code here
-    pass
+    # greedy algo
+    start = time.time()
+    num_trips = len(greedy_cow_transport(cows,limit))
+    end = time.time()
+    print('greedy =', num_trips, 'trips,', end - start, 'seconds')
+    
+    # brute force algo
+    start = time.time()
+    num_trips = len(brute_force_cow_transport(cows,limit))
+    end = time.time()
+    print('brute =', num_trips, 'trips,', end - start, 'seconds')
+    return
 
 
 """
@@ -175,4 +182,5 @@ limit=10
 print(cows,'\n')
 
 #print(greedy_cow_transport(cows, limit))
-print(brute_force_cow_transport(cows, limit))
+#print(brute_force_cow_transport(cows, limit))
+compare_cow_transport_algorithms()
