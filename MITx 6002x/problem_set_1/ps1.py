@@ -112,8 +112,38 @@ def brute_force_cow_transport(cows,limit=10):
     transported on a particular trip and the overall list containing all the
     trips
     """
-    # TODO: Your code here
-    pass
+    # it worked last time and helped me keep organized
+    cows_copy = cows.copy()
+    this_trip = []
+    remaining_limit = limit
+    answer = []
+    
+    # since get_partitions takes in a list, make list
+    cow_list = []
+    for i in cows.copy():
+        cow_list.append(i) # add the keys
+    lowest_edge = len(cow_list) # track the answer with lowest possible edges
+    
+    # call get_partitions() with the list of cows
+    for combo in (get_partitions(cow_list)):
+        # see if combo is valid by finding sum of weights in each list
+        weight_broken = 0
+        num_trips = 0
+        for trip in combo: # determine if trip breaks weight limit
+            num_trips += 1    
+            total = 0
+            for item in trip:
+                total += cows_copy[item] # adding in each cow
+            if total > limit: # limit broken
+                    weight_broken += 1
+        if weight_broken > 0:
+            continue
+        else: # combo is valid
+            # find number of edges (trips). if lower, make this the new answer
+            if num_trips <= lowest_edge:
+                lowest_edge = num_trips
+                answer = combo
+    return answer
 
         
 # Problem 3
@@ -141,8 +171,8 @@ lines to print the result of your problem.
 """
 
 cows = load_cows("ps1_cow_data.txt")
-limit=100
+limit=10
 print(cows,'\n')
 
-print(greedy_cow_transport(cows, limit))
+#print(greedy_cow_transport(cows, limit))
 print(brute_force_cow_transport(cows, limit))
