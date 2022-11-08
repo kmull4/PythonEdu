@@ -10,14 +10,9 @@ import pylab
 ## Comment/uncomment the relevant lines, depending on which version of Python you have
 ##################
 
-# For Python 3.5:
-#from ps2_verify_movement35 import testRobotMovement
-# If you get a "Bad magic number" ImportError, you are not using Python 3.5 
-
 # For Python 3.9:
 from ps2_verify_movement39 import testRobotMovement
 # If you get a "Bad magic number" ImportError, you are not using Python 3.9
-
 
 # === Provided class Position
 class Position(object):
@@ -82,7 +77,17 @@ class RectangularRoom(object):
         width: an integer > 0
         height: an integer > 0
         """
-        raise NotImplementedError
+        self.w = width
+        self.h = height
+        self.numTiles = width * height
+        self.dirtyTiles = []
+        # make a list of the dirty tiles
+        for tw in range(width):
+            for th in range(height):
+                tile = [tw,th]
+                self.dirtyTiles.append(tile)
+        # wrote dirty tiles first, all tiles next
+        self.allTiles = self.dirtyTiles.copy()
     
     def cleanTileAtPosition(self, pos):
         """
@@ -92,7 +97,9 @@ class RectangularRoom(object):
 
         pos: a Position
         """
-        raise NotImplementedError
+        tile = [int(pos.getX()), int(pos.getY())]
+        if tile in self.dirtyTiles:
+            self.dirtyTiles.remove(tile)
 
     def isTileCleaned(self, m, n):
         """
@@ -104,7 +111,11 @@ class RectangularRoom(object):
         n: an integer
         returns: True if (m, n) is cleaned, False otherwise
         """
-        raise NotImplementedError
+        tile = [m,n]
+        if tile not in self.dirtyTiles:
+            return True
+        else:
+            return False
     
     def getNumTiles(self):
         """
@@ -112,7 +123,7 @@ class RectangularRoom(object):
 
         returns: an integer
         """
-        raise NotImplementedError
+        return self.numTiles
 
     def getNumCleanedTiles(self):
         """
@@ -120,7 +131,7 @@ class RectangularRoom(object):
 
         returns: an integer
         """
-        raise NotImplementedError
+        return self.numTiles - len(self.dirtyTiles)
 
     def getRandomPosition(self):
         """
@@ -128,7 +139,9 @@ class RectangularRoom(object):
 
         returns: a Position object.
         """
-        raise NotImplementedError
+        randX, randY = random.randint(0, self.w-1), random.randint(0, self.h-1)
+        randPos = Position(randX, randY)
+        return randPos
 
     def isPositionInRoom(self, pos):
         """
@@ -137,7 +150,10 @@ class RectangularRoom(object):
         pos: a Position object.
         returns: True if pos is in the room, False otherwise.
         """
-        raise NotImplementedError
+        if 0 <= pos.getX() < self.w and 0 <= pos.getY() < self.h:
+            return True
+        else:
+            return False
 
 
 # === Problem 2
@@ -328,3 +344,9 @@ def showPlot2(title, x_label, y_label):
 #
 #       (... your call here ...)
 #
+
+# testing
+myPos = Position(0,0)
+myRoom = RectangularRoom(5,5)
+print(myRoom.dirtyTiles)
+print(myRoom.getRandomPosition())
