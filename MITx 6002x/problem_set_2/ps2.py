@@ -139,7 +139,7 @@ class RectangularRoom(object):
 
         returns: a Position object.
         """
-        randX, randY = random.randint(0, self.w-1), random.randint(0, self.h-1)
+        randX, randY = random.randrange(self.w), random.randrange(self.h)
         randPos = Position(randX, randY)
         return randPos
 
@@ -172,11 +172,19 @@ class Robot(object):
         Initializes a Robot with the given speed in the specified room. The
         robot initially has a random direction and a random position in the
         room. The robot cleans the tile it is on.
+        Note: The Robot class is an abstract class, which means that we will
+        never make an instance of it.
 
         room:  a RectangularRoom object.
         speed: a float (speed > 0)
         """
-        raise NotImplementedError
+        self.room = room
+        self.speed = speed
+        # random start for position and direction
+        self.pos = room.getRandomPosition()
+        self.dir = random.randrange(360)
+        # clean the starting tile
+        self.room.cleanTileAtPosition(self.pos)
 
     def getRobotPosition(self):
         """
@@ -184,7 +192,7 @@ class Robot(object):
 
         returns: a Position object giving the robot's position.
         """
-        raise NotImplementedError
+        return self.pos
     
     def getRobotDirection(self):
         """
@@ -193,7 +201,7 @@ class Robot(object):
         returns: an integer d giving the direction of the robot as an angle in
         degrees, 0 <= d < 360.
         """
-        raise NotImplementedError
+        return self.dir
 
     def setRobotPosition(self, position):
         """
@@ -201,7 +209,7 @@ class Robot(object):
 
         position: a Position object.
         """
-        raise NotImplementedError
+        self.pos = position
 
     def setRobotDirection(self, direction):
         """
@@ -209,7 +217,7 @@ class Robot(object):
 
         direction: integer representing an angle in degrees
         """
-        raise NotImplementedError
+        self.dir = direction
 
     def updatePositionAndClean(self):
         """
@@ -237,11 +245,16 @@ class StandardRobot(Robot):
         Move the robot to a new position and mark the tile it is on as having
         been cleaned.
         """
-        raise NotImplementedError
-
+        newPos = Position.getNewPosition(self.pos, self.dir, self.speed)
+        if self.room.isPositionInRoom(newPos):
+            self.pos = newPos
+        else:
+            self.dir = random.randrange(360)
+        # now clean new position
+        RectangularRoom.cleanTileAtPosition(self.room, self.pos)
 
 # Uncomment this line to see your implementation of StandardRobot in action!
-##testRobotMovement(StandardRobot, RectangularRoom)
+testRobotMovement(StandardRobot, RectangularRoom)
 
 
 # === Problem 4
@@ -345,8 +358,18 @@ def showPlot2(title, x_label, y_label):
 #       (... your call here ...)
 #
 
-# testing
+
+### testing ###
 myPos = Position(0,0)
 myRoom = RectangularRoom(5,5)
-print(myRoom.dirtyTiles)
-print(myRoom.getRandomPosition())
+#myBot = Robot(myRoom, 1.0)
+standBot = StandardRobot(myRoom, 1.0)
+
+def testRectangularRoom():
+    print(myRoom.dirtyTiles)
+    print(myRoom.getRandomPosition())
+
+
+#testRectangularRoom()
+#print(standBot.getRobotPosition())
+#print(standBot.updatePositionAndClean())
