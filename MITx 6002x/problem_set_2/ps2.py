@@ -180,7 +180,7 @@ class Robot(object):
         """
         self.room = room
         self.speed = speed
-        # random start for position and direction
+        # random start values for position and direction
         self.pos = room.getRandomPosition()
         self.dir = random.randrange(360)
         # clean the starting tile
@@ -249,12 +249,12 @@ class StandardRobot(Robot):
         if self.room.isPositionInRoom(newPos):
             self.pos = newPos
         else:
-            self.dir = random.randrange(360)
+            self.dir = random.randrange(360) # change direction
         # now clean new position
         RectangularRoom.cleanTileAtPosition(self.room, self.pos)
 
 # Uncomment this line to see your implementation of StandardRobot in action!
-testRobotMovement(StandardRobot, RectangularRoom)
+#testRobotMovement(StandardRobot, RectangularRoom)
 
 
 # === Problem 4
@@ -276,10 +276,26 @@ def runSimulation(num_robots, speed, width, height, min_coverage, num_trials,
     robot_type: class of robot to be instantiated (e.g. StandardRobot or
                 RandomWalkRobot)
     """
-    raise NotImplementedError
+    results  = []
+    for trial in range(num_trials):
+        # clear list and create new instance(s) for each trial
+        myRobots = []
+        room = RectangularRoom(width, height)
+        for r in range(num_robots):
+            myRobots.append(robot_type(room, speed))
+        # start timer and clean
+        time_passed = 0
+        while room.getNumCleanedTiles() / room.getNumTiles() < min_coverage:
+            # time to clean!
+            for bot in range(len(myRobots)): # move each robot
+                myRobots[bot].updatePositionAndClean()
+                #room.cleanTileAtPosition(myRobots[bot].getRobotPosition())
+            time_passed += 1
+        results.append(time_passed)
+    return sum(results) / len(results)
 
 # Uncomment this line to see how much your simulation takes on average
-##print(runSimulation(1, 1.0, 10, 10, 0.75, 30, StandardRobot))
+#print(runSimulation(2, 1.0, 8, 8, 0.8, 30, StandardRobot))
 
 
 # === Problem 5
@@ -359,7 +375,7 @@ def showPlot2(title, x_label, y_label):
 #
 
 
-### testing ###
+### misc testing ###
 myPos = Position(0,0)
 myRoom = RectangularRoom(5,5)
 #myBot = Robot(myRoom, 1.0)
@@ -368,7 +384,6 @@ standBot = StandardRobot(myRoom, 1.0)
 def testRectangularRoom():
     print(myRoom.dirtyTiles)
     print(myRoom.getRandomPosition())
-
 
 #testRectangularRoom()
 #print(standBot.getRobotPosition())
