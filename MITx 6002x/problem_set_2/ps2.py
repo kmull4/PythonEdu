@@ -374,8 +374,61 @@ def showPlot2(title, x_label, y_label):
 # === Problem 6
 # NOTE: If you are running the simulation, you will have to close it 
 # before the plot will show up.
-showPlot1('Time It Takes 1 - 10 Robots To Clean 80% Of A Room', \
-          'Numer of Robots', 'Time-Steps to Clean')
-showPlot2('Time It Takes Two Robots To Clean 80% Of Variously Shaped Rooms', \
-          'Aspect Ratio', 'Time-Steps to Clean')
+def showPlots():
+    showPlot1('Time It Takes 1 - 10 Robots To Clean 80% Of A Room', \
+              'Numer of Robots', 'Time-Steps to Clean')
+    showPlot2('Time It Takes Two Robots To Clean 80% Of Variously Shaped Rooms',\
+              'Aspect Ratio', 'Time-Steps to Clean')
 
+# =============================================================================
+'''
+The problem set is done, but I am curious if I can show the effects between
+different numbers of trials.
+'''
+import statistics
+import time
+# === Self curiosities about number of trials.
+def numTrials(title, x_label, y_label):
+    """
+    Shows a visualization of how the number of trials run can effect the
+    spread of averaged Time-Steps to clean a 20*20 room to 80%. Additionally,
+    prints the standard deviation of each 
+    """
+    num_trial_range = range(5, 51, 5)
+    times1 = []
+    times2 = []
+    for num_trials in num_trial_range:
+        print("Plotting", num_trials, '/', max(num_trial_range))
+        times1.append(runSimulation(1, 1.0, 20, 20, 0.8, num_trials, StandardRobot))
+        times2.append(runSimulation(1, 1.0, 20, 20, 0.8, num_trials*10, StandardRobot))
+    pylab.plot(num_trial_range, times1)
+    pylab.plot(num_trial_range, times2)
+    pylab.title(title)
+    pylab.legend(('Base Trials', '10x Trials'))
+    pylab.xlabel(x_label)
+    pylab.ylabel(y_label)
+    pylab.show()
+    print(statistics.stdev(times1), 'SD of standard trials')
+    print(statistics.stdev(times2), 'SD of 10x trials')
+    sd_stand.append(round(statistics.stdev(times1), 2))
+    sd_10x.append(round(statistics.stdev(times2), 2))
+
+# experiment time!
+start_time = time.time()
+sd_stand, sd_10x = list(), list() # the standard deviations for each trial
+for i in range(10):
+    numTrials('Difference in Number of Trials', 'Number of Trials', 'Time-Steps to Clean')
+
+# display the collected data
+print('----\n')
+print('sd_stand results =', sd_stand)
+print('the trials present an average SD and SD(SD) of', statistics.mean(sd_stand),\
+      round(statistics.stdev(sd_stand), 3), '\n')
+print('sd_10x =', sd_10x)
+print('the trials present an average SD and SD(SD) of', statistics.mean(sd_10x),\
+      round(statistics.stdev(sd_10x), 3), '\n')
+
+# report the time it took to run this experiment
+end_time = time.time()
+time_elapsed = round(end_time - start_time, 2)
+print('this experiment took', time_elapsed, 'seconds')
