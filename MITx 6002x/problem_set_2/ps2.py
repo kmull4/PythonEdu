@@ -295,7 +295,7 @@ def runSimulation(num_robots, speed, width, height, min_coverage, num_trials,
     return sum(results) / len(results)
 
 # Uncomment this line to see how much your simulation takes on average
-#print(runSimulation(2, 1.0, 8, 8, 0.8, 30, StandardRobot))
+#print(runSimulation(8, 1.0, 10, 30, 0.8, 30, StandardRobot))
 
 
 # === Problem 5
@@ -314,21 +314,19 @@ class RandomWalkRobot(Robot):
         newPos = Position.getNewPosition(self.pos, self.dir, self.speed)
         if self.room.isPositionInRoom(newPos):
             self.pos = newPos
-        else:
-            self.dir = random.randrange(360) # change direction
+        self.dir = random.randrange(360) # change direction
         # now clean new position
         RectangularRoom.cleanTileAtPosition(self.room, self.pos)
-
-
-# Uncomment to test
-#testRobotMovement(StandardRobot, RectangularRoom)
-#print(runSimulation(1, 1.0, 5, 5, 0.75, 30, RandomWalkRobot))
-# TODO: delete above lines when done testing
 
 
 def showPlot1(title, x_label, y_label):
     """
     What information does the plot produced by this function tell you?
+    
+    This function runs through different number of robots (x axis) and shows
+    the time-steps (y axis) it takes to clean a 20 x 20 room. It plots two
+    lines - one for the StandardRobot approach, the other for RandomWalkRobot
+    approach.
     """
     num_robot_range = range(1, 11)
     times1 = []
@@ -349,6 +347,11 @@ def showPlot1(title, x_label, y_label):
 def showPlot2(title, x_label, y_label):
     """
     What information does the plot produced by this function tell you?
+    
+    This function runs through differently-rectangular rooms (x axis) and shows
+    the time-steps (y axis) it takes to clean each of these rooms. It plots two
+    lines - one for the StandardRobot approach, the other for RandomWalkRobot
+    approach.
     """
     aspect_ratios = []
     times1 = []
@@ -371,32 +374,8 @@ def showPlot2(title, x_label, y_label):
 # === Problem 6
 # NOTE: If you are running the simulation, you will have to close it 
 # before the plot will show up.
+showPlot1('Time It Takes 1 - 10 Robots To Clean 80% Of A Room', \
+          'Numer of Robots', 'Time-Steps to Clean')
+showPlot2('Time It Takes Two Robots To Clean 80% Of Variously Shaped Rooms', \
+          'Aspect Ratio', 'Time-Steps to Clean')
 
-#
-# 1) Write a function call to showPlot1 that generates an appropriately-labeled
-#     plot.
-#
-#       (... your call here ...)
-#
-
-#
-# 2) Write a function call to showPlot2 that generates an appropriately-labeled
-#     plot.
-#
-#       (... your call here ...)
-#
-
-
-### misc testing ###
-myPos = Position(0,0)
-myRoom = RectangularRoom(5,5)
-#myBot = Robot(myRoom, 1.0)
-standBot = StandardRobot(myRoom, 1.0)
-
-def testRectangularRoom():
-    print(myRoom.dirtyTiles)
-    print(myRoom.getRandomPosition())
-
-#testRectangularRoom()
-#print(standBot.getRobotPosition())
-#print(standBot.updatePositionAndClean())
