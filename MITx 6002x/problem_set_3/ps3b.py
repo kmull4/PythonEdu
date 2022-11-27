@@ -2,6 +2,7 @@
 
 import random
 import pylab
+from ps3b_precompiled_39 import * # for Python version 3.9
 
 ''' 
 Begin helper code
@@ -19,35 +20,38 @@ class NoChildException(Exception):
 End helper code
 '''
 
+debug = False
+if debug: # TODO: delete me when complete
+    random.seed(0) # to consistently reproduce random results for debugging
+
 #
 # PROBLEM 1
 #
 class SimpleVirus(object):
-
     """
     Representation of a simple virus (does not model drug effects/resistance).
     """
     def __init__(self, maxBirthProb, clearProb):
         """
         Initialize a SimpleVirus instance, saves all parameters as attributes
-        of the instance.        
+        of the instance.
         maxBirthProb: Maximum reproduction probability (a float between 0-1)        
         clearProb: Maximum clearance probability (a float between 0-1).
         """
-
-        # TODO
+        self.maxBirthProb = maxBirthProb
+        self.clearProb = clearProb
 
     def getMaxBirthProb(self):
         """
         Returns the max birth probability.
         """
-        # TODO
+        return self.maxBirthProb
 
     def getClearProb(self):
         """
         Returns the clear probability.
         """
-        # TODO
+        return self.clearProb
 
     def doesClear(self):
         """ Stochastically determines whether this virus particle is cleared from the
@@ -55,10 +59,11 @@ class SimpleVirus(object):
         returns: True with probability self.getClearProb and otherwise returns
         False.
         """
+        if random.random() > self.getClearProb():
+            return False
+        else:
+            return True
 
-        # TODO
-
-    
     def reproduce(self, popDensity):
         """
         Stochastically determines whether this virus particle reproduces at a
@@ -69,7 +74,7 @@ class SimpleVirus(object):
         If this virus particle reproduces, then reproduce() creates and returns
         the instance of the offspring SimpleVirus (which has the same
         maxBirthProb and clearProb values as its parent).         
-
+        
         popDensity: the population density (a float), defined as the current
         virus population divided by the maximum population.         
         
@@ -78,9 +83,11 @@ class SimpleVirus(object):
         maxBirthProb and clearProb values as this virus. Raises a
         NoChildException if this virus particle does not reproduce.               
         """
-
-        # TODO
-
+        reproduceProb = self.maxBirthProb * (1 - popDensity)
+        if random.random() > reproduceProb:
+            raise NoChildException # did not reproduce
+        else: # return new instance of SimpleVirus
+            return SimpleVirus(self.maxBirthProb, self.clearProb)
 
 
 class Patient(object):
@@ -99,31 +106,27 @@ class Patient(object):
 
         maxPop: the maximum virus population for this patient (an integer)
         """
-
-        # TODO
+        self.viruses = viruses
+        self.maxPop = maxPop
 
     def getViruses(self):
         """
         Returns the viruses in this Patient.
         """
-        # TODO
-
+        return self.viruses
 
     def getMaxPop(self):
         """
         Returns the max population.
         """
-        # TODO
-
+        return self.maxPop
 
     def getTotalPop(self):
         """
         Gets the size of the current total virus population. 
         returns: The total virus population (an integer)
         """
-
-        # TODO        
-
+        return len(self.viruses)
 
     def update(self):
         """
@@ -143,9 +146,20 @@ class Patient(object):
         returns: The total virus population at the end of the update (an
         integer)
         """
-
-        # TODO
-
+        for v in self.viruses:
+            # see if virus has cleared
+            if v.doesClear():
+                self.viruses.remove(v)
+                continue
+        # calc new population density (popDensity, float)
+        popDensity = min(len(self.viruses) / self.maxPop, 1)
+        # determine how many produce with new popDensity
+        for v in self.viruses:
+            try:
+                self.viruses.append(v.reproduce(popDensity))
+            except NoChildException: # returned a NoChildException
+                continue
+        return len(self.viruses)
 
 
 #
@@ -166,10 +180,37 @@ def simulationWithoutDrug(numViruses, maxPop, maxBirthProb, clearProb,
     clearProb: Maximum clearance probability (a float between 0-1)
     numTrials: number of simulation runs to execute (an integer)
     """
-
-    # TODO
-
-
+    # timesteps and graph values
+    timesteps = 300
+    y_vals, results, final_y = list(), list(), list()
+    
+    # run simulation numTrials times
+    for i in range(numTrials):
+        viruses = [] # new list of viruses
+        for j in range(numViruses): # add virus instances
+            viruses.append(SimpleVirus(maxBirthProb, clearProb))
+        # create instance of Patient
+        mypatient = Patient(viruses, maxPop)
+        # run simulation on mypatient
+        for k in range(timesteps):
+            y_vals.append(mypatient.update())
+        # add list of y_vals to results
+        results.append(y_vals)
+    
+    # average out results
+    for i in range(timesteps):
+        avg = [] # blank list
+        for l in results:
+            avg.append(l[i]) # add the value for each list at index i
+        final_y.append(sum(avg) / len(avg))
+    
+    # plot
+    pylab.plot(final_y, label = "SimpleVirus")
+    pylab.title("SimpleVirus simulation")
+    pylab.xlabel("Time Steps")
+    pylab.ylabel("Average Virus Population")
+    pylab.legend(loc = "best")
+    pylab.show()
 
 #
 # PROBLEM 3
@@ -389,3 +430,16 @@ def simulationWithDrug(numViruses, maxPop, maxBirthProb, clearProb, resistances,
     """
 
     # TODO
+
+#############################################################################
+##### TODO: delete testing when done
+viruses = [
+SimpleVirus(0.59, 0.06),
+SimpleVirus(0.95, 0.91),
+SimpleVirus(0.99, 0.54),
+SimpleVirus(0.27, 0.56),
+SimpleVirus(0.02, 0.37)
+]
+
+P1 = Patient(viruses, 7)
+simulationWithoutDrug(100, 1000, 0.1, 0.05, 10)
