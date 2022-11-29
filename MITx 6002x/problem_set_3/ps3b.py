@@ -334,8 +334,10 @@ class ResistantVirus(SimpleVirus):
         return ResistantVirus(self.maxBirthProb, self.clearProb,\
                               self.resistances, self.mutProb)
 
-
-class TreatedPatient(Patient): # part of problem 4, not 3
+#
+# PROBLEM 4
+#
+class TreatedPatient(Patient):
     """
     Representation of a patient. The patient is able to take drugs and his/her
     virus population can acquire resistance to the drugs he/she takes.
@@ -415,9 +417,8 @@ class TreatedPatient(Patient): # part of problem 4, not 3
         # TODO
 
 
-
 #
-# PROBLEM 4
+# PROBLEM 5
 #
 def simulationWithDrug(numViruses, maxPop, maxBirthProb, clearProb, resistances,
                        mutProb, numTrials):
