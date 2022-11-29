@@ -20,9 +20,6 @@ class NoChildException(Exception):
 End helper code
 '''
 
-debug = False
-if debug: # TODO: delete me when complete
-    random.seed(0) # to consistently reproduce random results for debugging
 
 #
 # PROBLEM 1
@@ -218,7 +215,7 @@ def simulationWithoutDrug(numViruses, maxPop, maxBirthProb, clearProb,
 class ResistantVirus(SimpleVirus):
     """
     Representation of a virus which can have drug resistance.
-    """   
+    """
 
     def __init__(self, maxBirthProb, clearProb, resistances, mutProb):
         """
@@ -237,21 +234,21 @@ class ResistantVirus(SimpleVirus):
         mutProb: Mutation probability for this virus particle (a float). This is
         the probability of the offspring acquiring or losing resistance to a drug.
         """
-
-        # TODO
-
+        SimpleVirus.__init__(self, maxBirthProb, clearProb)
+        self.resistances = resistances
+        self.mutProb = mutProb
 
     def getResistances(self):
         """
         Returns the resistances for this virus.
         """
-        # TODO
+        return self.resistances
 
     def getMutProb(self):
         """
         Returns the mutation probability for this virus.
         """
-        # TODO
+        return self.mutProb
 
     def isResistantTo(self, drug):
         """
@@ -264,9 +261,10 @@ class ResistantVirus(SimpleVirus):
         returns: True if this virus instance is resistant to the drug, False
         otherwise.
         """
-        
-        # TODO
-
+        try:
+            return self.resistances[drug]
+        except KeyError:
+            return False
 
     def reproduce(self, popDensity, activeDrugs):
         """
@@ -312,12 +310,32 @@ class ResistantVirus(SimpleVirus):
         maxBirthProb and clearProb values as this virus. Raises a
         NoChildException if this virus particle does not reproduce.
         """
+        # check to see if resistant to all drugs
+        for drug in activeDrugs:
+            if self.isResistantTo(drug) == False:
+                raise NoChildException # not resistant to at least one drug
+        
+        # similar to SimpleVirus chance to reproduce
+        reproduceProb = self.maxBirthProb * (1 - popDensity)
+        if random.random() > reproduceProb:
+            raise NoChildException # did not reproduce naturally
+        
+        # calculate mutations for offspring
+        for drug in self.resistances:
+            if self.resistances[drug] == True:
+                # mutProb chance to lose resistance
+                if random.random() < self.mutProb:
+                    self.resistances[drug] = False
+            else:
+                # 1-mutProb chance to gain resistance
+                if random.random() > (1 - self.mutProb):
+                    self.resistances[drug] = True
+        
+        return ResistantVirus(self.maxBirthProb, self.clearProb,\
+                              self.resistances, self.mutProb)
 
-        # TODO
 
-            
-
-class TreatedPatient(Patient):
+class TreatedPatient(Patient): # part of problem 4, not 3
     """
     Representation of a patient. The patient is able to take drugs and his/her
     virus population can acquire resistance to the drugs he/she takes.
@@ -334,8 +352,7 @@ class TreatedPatient(Patient):
 
         maxPop: The  maximum virus population for this patient (an integer)
         """
-
-        # TODO
+        Patient.__init__(self, viruses, maxPop)
 
 
     def addPrescription(self, newDrug):
@@ -348,7 +365,6 @@ class TreatedPatient(Patient):
 
         postcondition: The list of drugs being administered to a patient is updated
         """
-
         # TODO
 
 
@@ -359,7 +375,6 @@ class TreatedPatient(Patient):
         returns: The list of drug names (strings) being administered to this
         patient.
         """
-
         # TODO
 
 
@@ -374,7 +389,6 @@ class TreatedPatient(Patient):
         returns: The population of viruses (an integer) with resistances to all
         drugs in the drugResist list.
         """
-
         # TODO
 
 
@@ -398,7 +412,6 @@ class TreatedPatient(Patient):
         returns: The total virus population at the end of the update (an
         integer)
         """
-
         # TODO
 
 
@@ -428,18 +441,20 @@ def simulationWithDrug(numViruses, maxPop, maxBirthProb, clearProb, resistances,
     numTrials: number of simulation runs to execute (an integer)
     
     """
-
     # TODO
+
 
 #############################################################################
 ##### TODO: delete testing when done
+random.seed(0) # to consistently reproduce random results for debugging
 viruses = [
 SimpleVirus(0.59, 0.06),
 SimpleVirus(0.95, 0.91),
-SimpleVirus(0.99, 0.54),
-SimpleVirus(0.27, 0.56),
-SimpleVirus(0.02, 0.37)
+SimpleVirus(0.99, 0.54)
 ]
 
-P1 = Patient(viruses, 7)
-simulationWithoutDrug(100, 1000, 0.1, 0.05, 10)
+virus = ResistantVirus(1.0, 0.0, {"drug2": True}, 1.0)
+for i in range(10):
+    virus.reproduce(0, [])
+
+print('mutProb =', virus.getMutProb())
