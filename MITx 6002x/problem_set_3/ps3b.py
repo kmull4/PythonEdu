@@ -182,7 +182,7 @@ def simulationWithoutDrug(numViruses, maxPop, maxBirthProb, clearProb,
     """
     # timesteps and graph values
     timesteps = 300
-    y_vals, results, final_y = list(), list(), list()
+    yVals, results, finalY = list(), list(), list()
     
     # run simulation numTrials times
     for i in range(numTrials):
@@ -193,19 +193,19 @@ def simulationWithoutDrug(numViruses, maxPop, maxBirthProb, clearProb,
         mypatient = Patient(viruses, maxPop)
         # run simulation on mypatient
         for k in range(timesteps):
-            y_vals.append(mypatient.update())
-        # add list of y_vals to results
-        results.append(y_vals)
+            yVals.append(mypatient.update())
+        # add list of yVals to results
+        results.append(yVals)
     
     # average out results
     for i in range(timesteps):
         avg = [] # blank list
         for l in results:
             avg.append(l[i]) # add the value for each list at index i
-        final_y.append(sum(avg) / len(avg))
+        finalY.append(sum(avg) / len(avg))
     
     # plot
-    pylab.plot(final_y, label = "SimpleVirus")
+    pylab.plot(finalY, label = "SimpleVirus")
     pylab.title("SimpleVirus simulation")
     pylab.xlabel("Time Steps")
     pylab.ylabel("Average Virus Population")
@@ -514,8 +514,8 @@ def simulationWithDrug(numViruses, maxPop, maxBirthProb, clearProb, resistances,
         finalYResistant.append(sum(avg) / len(avg))
     
     # plot
-    pylab.plot(finalYTotal, label = "ResistantVirus Total Count")
-    pylab.plot(finalYResistant, label = "ResistantVirus Resistant Count")
+    pylab.plot(finalYTotal, label = "Virus Total Count")
+    pylab.plot(finalYResistant, label = "Virus Resistant Count")
     pylab.title("ResistantVirus simulation")
     pylab.xlabel("Time Step")
     pylab.ylabel("# viruses")
@@ -523,11 +523,6 @@ def simulationWithDrug(numViruses, maxPop, maxBirthProb, clearProb, resistances,
     pylab.show()
 
 
-# =============================================================================
-# TODO: delete testing section when complete
-# =============================================================================
-
-#random.seed(0) # to consistently reproduce results for debugging
-
-#simulationWithDrug(100, 1000, 0.1, 0.05, {'guttagonol': False}, 0.005, 10)
-simulationWithDrug(1, 20, 1.0, 0.0, {"guttagonol": True}, 1.0, 5)
+if __name__ == "__main__":
+    #simulationWithDrug(100, 1000, 0.1, 0.05, {'guttagonol': False}, 0.005, 100)
+    simulationWithDrug(75, 100, .8, 0.1, {"guttagonol": True}, 0.8, 10)
