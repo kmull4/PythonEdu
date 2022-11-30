@@ -86,7 +86,6 @@ class SimpleVirus(object):
         else: # return new instance of SimpleVirus
             return SimpleVirus(self.maxBirthProb, self.clearProb)
 
-
 class Patient(object):
     """
     Representation of a simplified patient. The patient does not take any drugs
@@ -139,22 +138,26 @@ class Patient(object):
         - Based on this value of population density, determine whether each 
           virus particle should reproduce and add offspring virus particles to 
           the list of viruses in this patient.                    
-
+          
+        popDensity is defined as the ratio of the current virus population to
+        the maximum virus population for a patient and should be calculated in
+        the update method of the Patient class.
+        
         returns: The total virus population at the end of the update (an
         integer)
         """
         for v in self.viruses:
-            # see if virus has cleared
+            # see if virus has cleared naturally
             if v.doesClear():
                 self.viruses.remove(v)
                 continue
         # calc new population density (popDensity, float)
-        popDensity = min(len(self.viruses) / self.maxPop, 1)
+        popDensity = len(self.viruses)/self.maxPop
         # determine how many produce with new popDensity
-        for v in self.viruses:
+        for v in self.viruses[0:len(self.viruses)]: # index to stop and no new ones added
             try:
                 self.viruses.append(v.reproduce(popDensity))
-            except NoChildException: # returned a NoChildException
+            except NoChildException: # did not make a child virus
                 continue
         return len(self.viruses)
 
@@ -355,7 +358,7 @@ class TreatedPatient(Patient):
         maxPop: The  maximum virus population for this patient (an integer)
         """
         Patient.__init__(self, viruses, maxPop)
-
+        self.prescriptions = []
 
     def addPrescription(self, newDrug):
         """
@@ -367,8 +370,8 @@ class TreatedPatient(Patient):
 
         postcondition: The list of drugs being administered to a patient is updated
         """
-        # TODO
-
+        if newDrug not in self.prescriptions:
+            self.prescriptions.append(newDrug)
 
     def getPrescriptions(self):
         """
@@ -377,13 +380,12 @@ class TreatedPatient(Patient):
         returns: The list of drug names (strings) being administered to this
         patient.
         """
-        # TODO
-
+        return self.prescriptions
 
     def getResistPop(self, drugResist):
         """
         Get the population of virus particles resistant to the drugs listed in
-        drugResist.       
+        drugResist.
 
         drugResist: Which drug resistances to include in the population (a list
         of strings - e.g. ['guttagonol'] or ['guttagonol', 'srinol'])
@@ -391,8 +393,20 @@ class TreatedPatient(Patient):
         returns: The population of viruses (an integer) with resistances to all
         drugs in the drugResist list.
         """
-        # TODO
-
+        population = 0
+        # loop through viruses
+        for v in self.viruses:
+            resistAll = True
+            # loop through drugResist
+            for d in drugResist:
+                try:
+                    if v.resistances[d] == False:
+                        resistAll = False
+                except KeyError:
+                    resistAll = False
+            if resistAll:
+                population += 1
+        return population
 
     def update(self):
         """
@@ -414,8 +428,20 @@ class TreatedPatient(Patient):
         returns: The total virus population at the end of the update (an
         integer)
         """
-        # TODO
-
+        for v in self.viruses:
+            # see if virus has cleared naturally
+            if v.doesClear():
+                self.viruses.remove(v)
+                continue
+        # calc new population density (popDensity, float)
+        popDensity = len(self.viruses)/self.maxPop
+        # determine how many produce with new popDensity
+        for v in self.viruses[0:len(self.viruses)]: # index to stop and no new ones added
+            try:
+                self.viruses.append(v.reproduce(popDensity, self.prescriptions))
+            except NoChildException: # returned a NoChildException
+                continue
+        return len(self.viruses)
 
 #
 # PROBLEM 5
@@ -445,17 +471,55 @@ def simulationWithDrug(numViruses, maxPop, maxBirthProb, clearProb, resistances,
     # TODO
 
 
-#############################################################################
-##### TODO: delete testing when done
-random.seed(0) # to consistently reproduce random results for debugging
-viruses = [
-SimpleVirus(0.59, 0.06),
-SimpleVirus(0.95, 0.91),
-SimpleVirus(0.99, 0.54)
-]
+# =============================================================================
+# TODO: delete testing section when complete
+# =============================================================================
 
-virus = ResistantVirus(1.0, 0.0, {"drug2": True}, 1.0)
-for i in range(10):
-    virus.reproduce(0, [])
+#random.seed(0) # to consistently reproduce results for debugging
 
-print('mutProb =', virus.getMutProb())
+def test_Simples():
+    viruses = [SimpleVirus(1.0, 0.1),
+               SimpleVirus(0.9, 0.1),
+               SimpleVirus(0.0, 0.0),
+               SimpleVirus(1.0, 1.0)
+               ]
+    viruses2 = [
+        SimpleVirus(0.15, 0.33),
+        SimpleVirus(0.29, 0.31),
+        SimpleVirus(0.03, 0.07),
+        SimpleVirus(0.23, 0.01)
+        ]
+    pt = Patient(viruses, 9)
+    for i in range(10):
+        #print('before update, viruses are:', pt.getViruses())
+        print(len(pt.viruses))
+        pt.update()
+    print('end', pt.getTotalPop())
+
+def test_TreatedPatient1():
+    virus = ResistantVirus(1.0, 0.0, {}, 0.0)
+    patient = TreatedPatient([virus], 100)
+    for i in range(100):
+        patient.update()
+    print('end', patient.getTotalPop())
+def test_TreatedPatient2():
+    virus = ResistantVirus(1.0, 1.0, {}, 0.0)
+    patient = TreatedPatient([virus], 100)
+    for i in range(5):
+        patient.update()
+    print('end', patient.getTotalPop())
+def test_TreatedPatient6():
+    virus1 = ResistantVirus(1.0, 0.0, {"drug1": True}, 0.0)
+    virus2 = ResistantVirus(1.0, 0.0, {"drug1": False}, 0.0)
+    patient = TreatedPatient([virus1, virus2], 1000000)
+    patient.addPrescription("drug1")
+    for i in range(5):
+        print('update cycle #', i)
+        print(patient.update())
+    print('resistant pop', patient.getResistPop(['drug1']))
+    print('total pop', patient.getTotalPop())
+# =============================================================================
+# =============================================================================
+
+#test_Simples()
+test_TreatedPatient6()
