@@ -324,18 +324,20 @@ class ResistantVirus(SimpleVirus):
             raise NoChildException # did not reproduce naturally
         
         # calculate mutations for offspring
+        newResistances = self.resistances.copy()
         for drug in self.resistances:
             if self.resistances[drug] == True:
                 # mutProb chance to lose resistance
                 if random.random() < self.mutProb:
-                    self.resistances[drug] = False
-            else:
+                    newResistances[drug] = False
+            
+            elif self.resistances[drug] == False:
                 # 1-mutProb chance to gain resistance
                 if random.random() > (1 - self.mutProb):
-                    self.resistances[drug] = True
+                    newResistances[drug] = True
         
         return ResistantVirus(self.maxBirthProb, self.clearProb,\
-                              self.resistances, self.mutProb)
+                              newResistances, self.mutProb)
 
 #
 # PROBLEM 4
@@ -404,7 +406,7 @@ class TreatedPatient(Patient):
                         resistAll = False
                 except KeyError:
                     resistAll = False
-            if resistAll:
+            if resistAll == True:
                 population += 1
         return population
 
@@ -468,7 +470,57 @@ def simulationWithDrug(numViruses, maxPop, maxBirthProb, clearProb, resistances,
     numTrials: number of simulation runs to execute (an integer)
     
     """
-    # TODO
+    # timesteps and graph values
+    timesteps = 150
+    resultsTotal, resultsResistant, finalYTotal, finalYResistant = list(), list(), list(), list()
+    # remember that "resultsX" are a list of lists of the data so far
+    
+    # begin trials
+    for i in range(numTrials):
+        # run simulation per instructions
+        viruses, yValsTotal, yValsResistant = [], [], [] # new lists
+        for j in range(numViruses): # add virus instances
+            viruses.append(ResistantVirus(maxBirthProb, clearProb, resistances, mutProb))
+        # create new instance of Patient
+        mypatient = TreatedPatient(viruses, maxPop)
+        
+        # begin time
+        for k in range(timesteps):
+            yValsTotal.append(mypatient.update()) # core update() method
+            yValsResistant.append(mypatient.getResistPop(['guttagonol']))
+        # add treatment halfway through
+        mypatient.addPrescription('guttagonol')
+        # continue simulation on mypatient for the same amount of timesteps
+        for k in range(timesteps):
+            yValsTotal.append(mypatient.update()) # core update() method
+            yValsResistant.append(mypatient.getResistPop(['guttagonol']))
+        
+        # add data to results
+        resultsTotal.append(yValsTotal)
+        resultsResistant.append(yValsResistant)
+        
+    
+    # trials done, now average out resultsTotal
+    for i in range(timesteps*2): # remember how timesteps was used earlier
+        avg = [] # new list
+        for l in resultsTotal:
+            avg.append(l[i]) # add the value for each list at index i
+        finalYTotal.append(sum(avg) / len(avg))
+    # resultsResistant
+    for i in range(timesteps*2): # remember how timesteps was used earlier
+        avg = [] # new list
+        for l in resultsResistant:
+            avg.append(l[i]) # add the value for each list at index i
+        finalYResistant.append(sum(avg) / len(avg))
+    
+    # plot
+    pylab.plot(finalYTotal, label = "ResistantVirus Total Count")
+    pylab.plot(finalYResistant, label = "ResistantVirus Resistant Count")
+    pylab.title("ResistantVirus simulation")
+    pylab.xlabel("Time Step")
+    pylab.ylabel("# viruses")
+    pylab.legend(loc = "best")
+    pylab.show()
 
 
 # =============================================================================
@@ -477,49 +529,5 @@ def simulationWithDrug(numViruses, maxPop, maxBirthProb, clearProb, resistances,
 
 #random.seed(0) # to consistently reproduce results for debugging
 
-def test_Simples():
-    viruses = [SimpleVirus(1.0, 0.1),
-               SimpleVirus(0.9, 0.1),
-               SimpleVirus(0.0, 0.0),
-               SimpleVirus(1.0, 1.0)
-               ]
-    viruses2 = [
-        SimpleVirus(0.15, 0.33),
-        SimpleVirus(0.29, 0.31),
-        SimpleVirus(0.03, 0.07),
-        SimpleVirus(0.23, 0.01)
-        ]
-    pt = Patient(viruses, 9)
-    for i in range(10):
-        #print('before update, viruses are:', pt.getViruses())
-        print(len(pt.viruses))
-        pt.update()
-    print('end', pt.getTotalPop())
-
-def test_TreatedPatient1():
-    virus = ResistantVirus(1.0, 0.0, {}, 0.0)
-    patient = TreatedPatient([virus], 100)
-    for i in range(100):
-        patient.update()
-    print('end', patient.getTotalPop())
-def test_TreatedPatient2():
-    virus = ResistantVirus(1.0, 1.0, {}, 0.0)
-    patient = TreatedPatient([virus], 100)
-    for i in range(5):
-        patient.update()
-    print('end', patient.getTotalPop())
-def test_TreatedPatient6():
-    virus1 = ResistantVirus(1.0, 0.0, {"drug1": True}, 0.0)
-    virus2 = ResistantVirus(1.0, 0.0, {"drug1": False}, 0.0)
-    patient = TreatedPatient([virus1, virus2], 1000000)
-    patient.addPrescription("drug1")
-    for i in range(5):
-        print('update cycle #', i)
-        print(patient.update())
-    print('resistant pop', patient.getResistPop(['drug1']))
-    print('total pop', patient.getTotalPop())
-# =============================================================================
-# =============================================================================
-
-#test_Simples()
-test_TreatedPatient6()
+#simulationWithDrug(100, 1000, 0.1, 0.05, {'guttagonol': False}, 0.005, 10)
+simulationWithDrug(1, 20, 1.0, 0.0, {"guttagonol": True}, 1.0, 5)
