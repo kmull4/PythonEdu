@@ -1,5 +1,5 @@
 import numpy as np
-import pylab
+import pylab # does not work with the MIT grader
 import re
 
 # cities in our weather data
@@ -130,8 +130,10 @@ def generate_models(x, y, degs):
         a list of numpy arrays, where each array is a 1-d array of coefficients
         that minimizes the squared error of the fitting polynomial
     """
-    # TODO
-    pass
+    listOfArrays = []
+    for n in degs:
+        listOfArrays.append(np.array(np.polyfit(x, y, n)))
+    return listOfArrays
 
 # Problem 2
 def r_squared(y, estimated):
@@ -182,12 +184,20 @@ for year in INTERVAL_1:
     y.append(raw_data.get_daily_temp('BOSTON', 1, 10, year))
 models = generate_models(x, y, [1])
 evaluate_models_on_training(x, y, models)
+    
+def stop_problem_4_from_running_so_i_can_troubleshoot():
+    # Problem 4: FILL IN MISSING CODE TO GENERATE y VALUES
+    x1 = INTERVAL_1
+    x2 = INTERVAL_2
+    y = []
+    # MISSING LINES
+    models = generate_models(x, y, [1])    
+    evaluate_models_on_training(x, y, models)
 
 
-# Problem 4: FILL IN MISSING CODE TO GENERATE y VALUES
-x1 = INTERVAL_1
-x2 = INTERVAL_2
-y = []
-# MISSING LINES
-models = generate_models(x, y, [1])    
-evaluate_models_on_training(x, y, models)
+# =============================================================================
+# CALL FUNCTIONS TO TEST #TODO: delete from final version
+# =============================================================================
+xTest = [1900, 1901, 1902, 1904, 2000]
+yTest = [32.0, 42.0, 31.3, 22.0, 33.0]
+generate_models(xTest, yTest, [2])
