@@ -1,5 +1,6 @@
 import numpy as np
-import pylab # does not work with the MIT grader
+# pylab is deprecated, does not work with the MIT grader, and has been removed.
+import matplotlib as mpl
 import re
 
 # cities in our weather data
@@ -145,8 +146,12 @@ def r_squared(y, estimated):
     Returns:
         a float for the R-squared error term
     """
-    # TODO
-    pass
+    residual, denom = 0, 0
+    dataMean = np.mean(y)
+    for i in range(len(y)):
+        residual += (y[i] - estimated[i])**2
+        denom += (y[i] - dataMean)**2
+    return 1 - residual/denom
 
 # Problem 3
 def evaluate_models_on_training(x, y, models):
@@ -200,4 +205,7 @@ def stop_problem_4_from_running_so_i_can_troubleshoot():
 # =============================================================================
 xTest = [1900, 1901, 1902, 1904, 2000]
 yTest = [32.0, 42.0, 31.3, 22.0, 33.0]
-generate_models(xTest, yTest, [2])
+estimatedTest = [32.3, 42.1, 31.2, 22.1, 34.0]
+
+print(r_squared(yTest, estimatedTest))
+print('correct output for this test shoudl be 0.9944')
