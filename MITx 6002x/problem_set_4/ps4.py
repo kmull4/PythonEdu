@@ -1,6 +1,5 @@
-import numpy as np
+import numpy as np, matplotlib as mpl, matplotlib.pyplot as plt
 # pylab is deprecated, does not work with the MIT grader, and has been removed.
-import matplotlib as mpl
 import re
 
 # cities in our weather data
@@ -112,8 +111,6 @@ class Climate(object):
         assert day in self.rawdata[city][year][month], "provided day is not available"
         return self.rawdata[city][year][month][day]
 
-
-
 """
 End helper code
 """
@@ -175,37 +172,39 @@ def evaluate_models_on_training(x, y, models):
     Returns:
         None
     """
-    # TODO
-    pass
+    for m in models:
+        # calc y vals for the regression line
+        yValsLine = []
+        for i in x:
+            yValsLine.append(i*m[0] + m[1])
+        
+        # plot
+        plt.plot(x, y, 'bo')
+        plt.plot(x, yValsLine, 'r-', label = 'Linear Regression')
+        R2 = str(r_squared(y, yValsLine))
+        plt.title('Linear Regression\nR2 =' + R2)
+        plt.xlabel('Year')
+        plt.ylabel('Temperature (C)')
+        plt.legend(loc = 'best')
+        plt.show()
 
 
 ### Begining of program
 raw_data = Climate('data.csv')
 
-# Problem 3
+# Problem 3 - Show plot and linear regression for the temp on January 10th
 y = []
 x = INTERVAL_1
 for year in INTERVAL_1:
     y.append(raw_data.get_daily_temp('BOSTON', 1, 10, year))
 models = generate_models(x, y, [1])
 evaluate_models_on_training(x, y, models)
-    
-def stop_problem_4_from_running_so_i_can_troubleshoot():
-    # Problem 4: FILL IN MISSING CODE TO GENERATE y VALUES
-    x1 = INTERVAL_1
-    x2 = INTERVAL_2
-    y = []
-    # MISSING LINES
-    models = generate_models(x, y, [1])    
-    evaluate_models_on_training(x, y, models)
 
-
-# =============================================================================
-# CALL FUNCTIONS TO TEST #TODO: delete from final version
-# =============================================================================
-xTest = [1900, 1901, 1902, 1904, 2000]
-yTest = [32.0, 42.0, 31.3, 22.0, 33.0]
-estimatedTest = [32.3, 42.1, 31.2, 22.1, 34.0]
-
-print(r_squared(yTest, estimatedTest))
-print('correct output for this test shoudl be 0.9944')
+# Problem 4 - Show plot and linear regression for the yearly average temp
+x1 = INTERVAL_1
+x2 = INTERVAL_2
+y = []
+for year in INTERVAL_1:
+    y.append(np.mean(raw_data.get_yearly_temp('BOSTON', year)))
+models = generate_models(x, y, [1])    
+evaluate_models_on_training(x, y, models)
