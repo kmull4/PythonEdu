@@ -22,9 +22,14 @@ kyleQOTD = 'C:/'
 saraQOTD = 'C:/'
 testQOTD = 'qotd_test_data.txt'
 
-# mysql interface
+# =============================================================================
+# MySQL interface
+# =============================================================================
+# TODO: this part
 
-
+# =============================================================================
+# Importing from text file
+# =============================================================================
 # read text file, parse text, and enter into db
 f = open(testQOTD, 'r')
 #header = f.readline().strip().split(',')
@@ -69,10 +74,34 @@ for line in f:
     #print('line #', count)
     
     
-
-    
 f.close()
 
+# fetch the question function
+def get_question_and_answer(date):
+    '''
+    Takes in date and returns the question and all associated answers.
 
+    Parameters
+    ----------
+    date : TYPE
+        DESCRIPTION.
 
+    Returns
+    -------
+    Tuple of:
+    question : STR
+        The question for that particular day.
+    answer : STR
+        A list of answers for each year. Maybe a dictionary? Probably a list.
+    '''
+    pass
+    return (question, answer)
 
+# =============================================================================
+# Presenting today's question.
+# =============================================================================
+# TODO: also this part
+
+# =============================================================================
+# Menu & altering or viewing previous questions.
+# =============================================================================
