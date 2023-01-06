@@ -15,6 +15,7 @@ with the structure:
     Answer[new line]
     [two new lines]
 """
+import mysql.connector, datetime.datetime
 
 months = ['January', 'February', 'March', 'April', 'May', 'June',\
           'July', 'August', 'September', 'October', 'November', 'December']
@@ -25,12 +26,17 @@ testQOTD = 'qotd_test_data.txt'
 # =============================================================================
 # MySQL interface
 # =============================================================================
-# TODO: this part
+mydb = mysql.connector.connect(
+    host="localhost",
+    user="root",
+    password="password",
+    database="qotd_db" # TODO: make the database in mysql
+    )
 
 # =============================================================================
-# Importing from text file
-# =============================================================================
+# Importing from text file (only used once in establishing db)
 # read text file, parse text, and enter into db
+# =============================================================================
 f = open(testQOTD, 'r')
 #header = f.readline().strip().split(',')
 count = 0
@@ -74,7 +80,12 @@ for line in f:
     #print('line #', count)
     
     
+    
 f.close()
+
+# =============================================================================
+# Here and below are functions that are to be used more than once.
+# =============================================================================
 
 # fetch the question function
 def get_question_and_answer(date):
@@ -100,7 +111,7 @@ def get_question_and_answer(date):
 # =============================================================================
 # Presenting today's question.
 # =============================================================================
-# TODO: also this part
+# datetime.datetime will be used here
 
 # =============================================================================
 # Menu & altering or viewing previous questions.
