@@ -80,7 +80,6 @@ for line in f:
     #print('line #', count)
     
     
-    
 f.close()
 
 # =============================================================================
@@ -99,7 +98,7 @@ def get_question_and_answer(date):
 
     Returns
     -------
-    Tuple of:
+    A tuple of:
     question : STR
         The question for that particular day.
     answer : STR
@@ -112,6 +111,26 @@ def get_question_and_answer(date):
 # Presenting today's question.
 # =============================================================================
 # datetime.datetime will be used here
+def today():
+    todays_date = datetime.datetime.today() # TODO: there's no way you did datetime correctly from memory
+    todays_question = get_question_and_answer(todays_date[0])
+    print("Today's question is:", todays_question)
+    todays_answer = input('')
+    print("Review of today's answer:", todays_answer)
+    try:
+        proof_read = input('Proof read looks good? (y/n)').lower()
+        if proof_read == 'y':
+            # enter into db
+            # print previous year's questions
+            print('Thanks for your answer! The previous years you answered:')
+            pass
+        elif proof_read == 'n':
+            # start at the top of this function. is there a command for that?
+            pass
+        else:
+            raise # raise an input error to restart try loop
+    
+    
 
 # =============================================================================
 # Menu & altering or viewing previous questions.
