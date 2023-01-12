@@ -86,11 +86,20 @@ f.close()
 # Here and below are functions that are to be used more than once.
 # =============================================================================
 
+def print_menu():
+    print("Just press enter to go to today's question.\n\
+          Enter v to view your q&a for a specific date.\n\
+          Enter vo to view other q&a for a specific date.\n\
+          Enter e to edit an answer.")
+    
+
 # fetch the question function
 def get_question_and_answer(date):
     '''
     Takes in date and returns the question and all associated answers.
-
+    Assumes the date is usable... or changes it if not.
+    datetime.datetime may have an input, or the user may also give an input.
+    
     Parameters
     ----------
     date : TYPE
@@ -128,10 +137,27 @@ def today():
             # start at the top of this function. is there a command for that?
             pass
         else:
-            raise # raise an input error to restart try loop
-    
+            raise Exception # TODO find what's closest to "inputException"
+    except:
+        # if at first your input isn't right, try: and try: again
+        pass
     
 
 # =============================================================================
 # Menu & altering or viewing previous questions.
 # =============================================================================
+def __main__():
+    # TODO: check that you did __main__() right, don't really remember.
+    user = input('Who goes there? (s/k)').lower()
+    print_menu()
+    menu = input('')
+    if menu == '':
+        today()
+    if menu == 'v':
+        # look up the format of datetime and use date here for that situation
+        # put more info on situation in the get_question_and_answer(date)
+        # function because that's what needs a specific date input
+        view_month = input('What is the month? (number only)')
+        view_day = input('What is the day? (number only)')
+        view_date = view_month + view_day #TODO some or other. hungry break.
+        get_question_and_answer(view_date)
