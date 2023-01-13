@@ -94,7 +94,7 @@ def print_menu():
     
 
 # fetch the question function
-def get_question_and_answer(date):
+def get_question_and_answer(date, user):
     '''
     Takes in date and returns the question and all associated answers.
     Assumes the date is usable... or changes it if not.
@@ -127,7 +127,7 @@ def today():
     todays_answer = input('')
     print("Review of today's answer:", todays_answer)
     try:
-        proof_read = input('Proof read looks good? (y/n)').lower()
+        proof_read = input('Proof read looks good? (y/n/q to quit)').lower()
         if proof_read == 'y':
             # enter into db
             # print previous year's questions
@@ -135,6 +135,9 @@ def today():
             pass
         elif proof_read == 'n':
             # start at the top of this function. is there a command for that?
+            pass
+        elif proof_read == 'q':
+            # quit the whole function and go back to menu
             pass
         else:
             raise Exception # TODO find what's closest to "inputException"
@@ -149,15 +152,22 @@ def today():
 def __main__():
     # TODO: check that you did __main__() right, don't really remember.
     user = input('Who goes there? (s/k)').lower()
-    print_menu()
-    menu = input('')
-    if menu == '':
-        today()
-    if menu == 'v':
-        # look up the format of datetime and use date here for that situation
-        # put more info on situation in the get_question_and_answer(date)
-        # function because that's what needs a specific date input
-        view_month = input('What is the month? (number only)')
-        view_day = input('What is the day? (number only)')
-        view_date = view_month + view_day #TODO some or other. hungry break.
-        get_question_and_answer(view_date)
+    try:
+        print_menu()
+        menu = input('')
+        if menu == '':
+            today()
+        elif menu == 'v':
+            # look up the format of datetime and use date here for that situation
+            # put more info on situation in the get_question_and_answer(date)
+            # function because that's what needs a specific date input
+            view_month = input('What is the month? (number only)')
+            view_day = input('What is the day? (number only)')
+            view_date = view_month + view_day #TODO some or other. hungry break.
+            get_question_and_answer(view_date)
+        elif menu == 'vo':
+            pass
+        elif menu == 'e':
+            pass
+    except:
+        raise Exception # input exception idea again
