@@ -120,9 +120,9 @@ def get_question_and_answer(date, user):
 # Presenting today's question.
 # =============================================================================
 # datetime.datetime will be used here
-def today():
+def today(user):
     todays_date = datetime.datetime.today() # TODO: there's no way you did datetime correctly from memory
-    todays_question = get_question_and_answer(todays_date[0])
+    todays_question = get_question_and_answer(todays_date, user)
     print("Today's question is:", todays_question)
     todays_answer = input('')
     print("Review of today's answer:", todays_answer)
@@ -156,15 +156,15 @@ def __main__():
         print_menu()
         menu = input('')
         if menu == '':
-            today()
+            today(user)
         elif menu == 'v':
-            # look up the format of datetime and use date here for that situation
-            # put more info on situation in the get_question_and_answer(date)
+            # look up the format of datetime before you code this part.
+            # more info on situation in the get_question_and_answer(...)
             # function because that's what needs a specific date input
             view_month = input('What is the month? (number only)')
             view_day = input('What is the day? (number only)')
             view_date = view_month + view_day #TODO some or other. hungry break.
-            get_question_and_answer(view_date)
+            get_question_and_answer(view_date, user)
         elif menu == 'vo':
             pass
         elif menu == 'e':
